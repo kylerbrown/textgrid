@@ -1,8 +1,10 @@
-# textgrid.py
+# textgrid
 
-A simple TextGrid to CSV converter.
+Version 0.2 
 
-Tier labels are discarded, as are unnamed intervals and points. Points are treated as intervals with identical start and stop values.
+A minimal python TextGrid module and CSV converter.
+
+Tier labels are saved as a column called "tier". Points are treated as intervals with identical start and stop values.
 
 Example input:
 
@@ -27,15 +29,26 @@ item []:
             text = "z"
 ```
 
-Example ouput using `python textgrid.py example.TextGrid --header`
+Example ouput using `textgrid2csv example.TextGrid`
 
 ```
-start,stop,label
-0.0,5.537098932314087,z
+start,stop,label,tier
+0.0,5.537098932314087,z,Mary
 ```
+
+## installation
+
+    git clone https://github.com/kylerbrown/textgrid.git
+    cd textgrid
+    pip install .
+
+    # optional testing (requires pytest)
+    pytest -v
 
 ## usage
-    usage: textgrid.py [-h] [-o OUTPUT] [--sep SEP] [--header] TextGrid
+
+    usage: textgrid2csv [-h] [-o OUTPUT] [--sep SEP] [--noheader] [--savegaps]
+                        TextGrid
 
     convert a TextGrid file to a CSV.
 
@@ -45,9 +58,10 @@ start,stop,label
     optional arguments:
       -h, --help            show this help message and exit
       -o OUTPUT, --output OUTPUT
-	    					(optional) outputfile
+                            (optional) outputfile
       --sep SEP             separator to use in CSV output
-      --header              adds a header to the CSV
+      --noheader            no header for the CSV
+      --savegaps            preserves intervals with no label
 
 ## programmatic usage with Python and Pandas:
 ```
@@ -55,9 +69,9 @@ start,stop,label
 >>> import textgrid
 >>> tgrid = textgrid.read_textgrid("example.TextGrid")
 >>> tgrid
-[Entry(start=0.0, stop=5.537098932314087, label='z')]
+[Entry(start=0.0, stop=5.537098932314087, label='z', tier='Mary')]
 >>> pd.DataFrame(tgrid)
-   start      stop label
-0      0  5.537099     z
+   start      stop label    tier
+0      0  5.537099     z    Mary
 >>> 
 ```

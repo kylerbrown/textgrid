@@ -92,7 +92,20 @@ item []:
             xmax = 5.537098932314087 
             text = "z" 
 """)
-
+example_file3 = StringIO("""
+    item [3]:
+        class = "TextTier" 
+        name = "bell" 
+        xmin = 0 
+        xmax = 4387.9766666666665 
+        points: size = 2 
+        points [1]:
+            number = 15.140637595485778 
+            mark = "a" 
+        points [2]:
+            number = 21.248327456582416 
+            mark = "cool" 
+        """)
 def test_get_float_val():
     assert textgrid._get_float_val("foo 123") == 123
     assert textgrid._get_float_val("number = 21.248327456582416") == 21.248327456582416
@@ -109,37 +122,43 @@ def test_build_entry_point():
     content = ["points [1]:",
                "number = 15.140637595485778 ",
                'mark = "a"']
-    entry = textgrid._build_entry(0, content)
+    entry = textgrid._build_entry(0, content, tier='testtier')
     assert entry.start == 15.140637595485778
     assert entry.stop == 15.140637595485778
     assert entry.label == "a"
+    assert entry.tier == "testtier"
 
 def test_build_entry_interval():
     content = ["intervals [4]:",
                 "xmin = 5.537098932314087",
                 "xmax = 8.711490373278787",
                 'text = "foo"']
-    entry = textgrid._build_entry(0, content)
+    entry = textgrid._build_entry(0, content, tier='testtier')
     assert entry.start == 5.537098932314087
     assert entry.stop == 8.711490373278787
     assert entry.label == "foo"
 
 
-class test_read_textgrid():
+def test_points():
+    tgrid = textgrid.read_textgrid(example_file3)
+    assert len(tgrid) == 2
 
-    def test_read_short():
-        tgrid = textgrid.read_textgrid(example_file2)
-        assert len(tgrid) == 1
-        entry = tgrid[0]
-        assert entry.start == 0
-        assert entry.stop == 5.537098932314087
-        assert entry.label == "z"
+def test_read_short():
+    tgrid = textgrid.read_textgrid(example_file2)
+    assert len(tgrid) == 1
+    entry = tgrid[0]
+    assert entry.start == 0
+    assert entry.stop == 5.537098932314087
+    assert entry.label == "z"
+    assert entry.tier == "Mary"
 
-    def test_read_long():
-        tgrid = textgrid.read_textgrid(example_file1)
-        assert len(tgrid) == 11
-        entry = tgrid[0]
-        assert entry.start == 0
-        assert entry.stop == 5.537098932314087
-        assert entry.label == "z"
-
+def test_read_long():
+    tgrid = textgrid.read_textgrid(example_file1)
+    assert len(tgrid) == 11
+    entry = tgrid[0]
+    assert entry.start == 0
+    assert entry.stop == 5.537098932314087 
+    assert entry.label == ""
+    entry2 = tgrid[-1]
+    assert entry2.label == "cool"
+    assert entry2.tier == "bell"
