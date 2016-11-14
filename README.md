@@ -32,7 +32,7 @@ item []:
 Example ouput using `textgrid2csv example.TextGrid`
 
 ```
-start,stop,label,tier
+start,stop,name,tier
 0.0,5.537098932314087,z,Mary
 ```
 
@@ -69,9 +69,9 @@ start,stop,label,tier
 >>> import textgrid
 >>> tgrid = textgrid.read_textgrid("example.TextGrid")
 >>> tgrid
-[Entry(start=0.0, stop=5.537098932314087, label='z', tier='Mary')]
+[Entry(start=0.0, stop=5.537098932314087, name='z', tier='Mary')]
 >>> pd.DataFrame(tgrid)
-   start      stop label    tier
+   start      stop name    tier
 0      0  5.537099     z    Mary
 >>> 
 ```

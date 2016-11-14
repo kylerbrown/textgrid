@@ -4,7 +4,7 @@ from collections import namedtuple
 
 Entry = namedtuple("Entry", ["start",
                              "stop",
-                             "label",
+                             "name",
                              "tier"])
 
 def read_textgrid(filename):
@@ -13,7 +13,7 @@ def read_textgrid(filename):
     each dictionary has the following keys:
     "start"
     "stop"
-    "label"
+    "name"
     "tier"
 
     Points and intervals use the same format, 
@@ -76,7 +76,7 @@ def write_csv(textgrid_list, filename=None, sep=",", header=True, save_gaps=Fals
         else:
             print(hline)
     for entry in textgrid_list:
-        if entry.label or save_gaps:  # skip unlabeled intervals
+        if entry.name or save_gaps:  # skip unlabeled intervals
             row = sep.join(str(x) for x in list(entry))
             if filename:
                 f.write(row + "\n")
@@ -98,7 +98,7 @@ def _build_entry(i, content, tier):
         offset = 0 # for "point" objects
     stop = _get_float_val(content[i + 1 + offset])
     label = _get_str_val(content[i + 2 + offset])
-    return Entry(start=start, stop=stop, label=label, tier=tier)
+    return Entry(start=start, stop=stop, name=label, tier=tier)
 
 
 def _get_float_val(string):
