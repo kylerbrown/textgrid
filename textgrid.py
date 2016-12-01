@@ -61,7 +61,7 @@ def _find_tiers(interval_lines, tier_lines, tiers):
 def _read(f):
     return [x.strip() for x in f.readlines()]
 
-def write_csv(textgrid_list, filename=None, sep=",", header=True, save_gaps=False):
+def write_csv(textgrid_list, filename=None, sep=",", header=True, save_gaps=False, meta=True):
     """
     Writes a list of textgrid dictionaries to a csv file.
     If no filename is specified, csv is printed to standard out.
@@ -85,7 +85,10 @@ def write_csv(textgrid_list, filename=None, sep=",", header=True, save_gaps=Fals
     if filename:
         f.flush()
         f.close()
-
+    if meta:
+        with open(filename + ".meta", "w") as metaf:
+            metaf.write("""---\nunits: s\ndatatype: 1002\n""")
+        
 def _build_entry(i, content, tier):
     """
     takes the ith line that begin an interval and returns
