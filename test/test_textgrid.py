@@ -125,7 +125,7 @@ def test_build_entry_point():
     entry = textgrid._build_entry(0, content, tier='testtier')
     assert entry.start == 15.140637595485778
     assert entry.stop == 15.140637595485778
-    assert entry.label == "a"
+    assert entry.name == "a"
     assert entry.tier == "testtier"
 
 def test_build_entry_interval():
@@ -136,7 +136,7 @@ def test_build_entry_interval():
     entry = textgrid._build_entry(0, content, tier='testtier')
     assert entry.start == 5.537098932314087
     assert entry.stop == 8.711490373278787
-    assert entry.label == "foo"
+    assert entry.name == "foo"
 
 
 def test_points():
@@ -149,7 +149,7 @@ def test_read_short():
     entry = tgrid[0]
     assert entry.start == 0
     assert entry.stop == 5.537098932314087
-    assert entry.label == "z"
+    assert entry.name == "z"
     assert entry.tier == "Mary"
 
 def test_read_long():
@@ -158,7 +158,7 @@ def test_read_long():
     entry = tgrid[0]
     assert entry.start == 0
     assert entry.stop == 5.537098932314087 
-    assert entry.label == ""
+    assert entry.name == ""
     entry2 = tgrid[-1]
-    assert entry2.label == "cool"
+    assert entry2.name == "cool"
     assert entry2.tier == "bell"
